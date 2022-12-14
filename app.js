@@ -5,8 +5,8 @@ const authorText = document.querySelector("#author");
 const loader = document.querySelector("#loader");
 const quoteContainer = document.querySelector(".quote-container");
 
-const getQuote = async () => {
-  loading();
+const fetchQuoteFromApi = async () => {
+  showLoadingSpinner();
   apiKey = "6+9LdIYv6wItnOKehhMmqg==4E6KOAgDQB76II6z";
   url = "https://api.api-ninjas.com/v1/quotes?category=";
   try {
@@ -23,28 +23,28 @@ const getQuote = async () => {
 
     quoteText.textContent = apiQuote[0].quote;
     authorText.textContent = apiQuote[0].author ?? "Unknown";
-    complete();
+    removeLoadingSpinner();
   } catch (err) {
     console.error(err);
   }
 };
 
-const tweet = async () => {
+const tweetQuote = async () => {
   const twitterUrl = `https://twitter.com/intent/tweet?text="${quoteText.textContent}" - ${authorText.textContent}`;
   window.open(twitterUrl, "_blank");
 };
 
-const loading = () => {
+const showLoadingSpinner = () => {
   loader.hidden = false;
   quoteContainer.hidden = true;
 };
 
-const complete = () => {
+const removeLoadingSpinner = () => {
   loader.hidden = true;
   quoteContainer.hidden = false;
 };
 
-getQuote();
+fetchQuoteFromApi();
 
-quoteButton.addEventListener("click", getQuote);
-twitterButton.addEventListener("click", tweet);
+quoteButton.addEventListener("click", fetchQuoteFromApi);
+twitterButton.addEventListener("click", tweetQuote);
